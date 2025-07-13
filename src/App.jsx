@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   AppBar,
   Toolbar,
@@ -7,13 +7,33 @@ import {
   Typography,
   Container,
   Grid,
-  Avatar
+  Avatar,
+  IconButton,
+  Menu,
+  MenuItem,
+  useMediaQuery
 } from "@mui/material";
+import { useTheme } from "@mui/material/styles"; // ✅ Add this line
+import MenuIcon from "@mui/icons-material/Menu";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
+
 export default function App() {
-  // Inject Tawk.to script on mount
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const navLinks = ["Home", "About", "Services", "Contact"]; // ✅ Add this line
+
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   useEffect(() => {
     var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
     (function () {
@@ -26,6 +46,8 @@ export default function App() {
       s0.parentNode.insertBefore(s1, s0);
     })();
   }, []);
+
+
 
   return (
     <Box>
@@ -54,30 +76,45 @@ export default function App() {
                   RootTech
                 </Typography>
               </Box>
-              <Box display="flex" alignItems="center">
-                {[
-                  "Home",
-                  "About",
-                  "Services",
-                  "Contact"
-                ].map((item) => (
-                  <Button
-                    key={item}
-                    component={Link}
-                    to={item === "Home" ? "/" : `/${item.toLowerCase()}`}
-                    sx={{
-                      color: "white",
-                      fontWeight: 500,
-                      textTransform: "none",
-                      mx: 1,
-                      fontSize: "1rem",
-                      "&:hover": { color: "#38bdf8" },
-                    }}
-                  >
-                    {item}
-                  </Button>
-                ))}
-              </Box>
+              {isMobile ? (
+                <Box>
+                  <IconButton onClick={handleMenu} sx={{ color: "white" }}>
+                    <MenuIcon />
+                  </IconButton>
+                  <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
+                    {navLinks.map((item) => (
+                      <MenuItem
+                        key={item}
+                        component={Link}
+                        to={item === "Home" ? "/" : `/${item.toLowerCase()}`}
+                        onClick={handleClose}
+                      >
+                        {item}
+                      </MenuItem>
+                    ))}
+                  </Menu>
+                </Box>
+              ) : (
+                <Box display="flex" alignItems="center">
+                  {navLinks.map((item) => (
+                    <Button
+                      key={item}
+                      component={Link}
+                      to={item === "Home" ? "/" : `/${item.toLowerCase()}`}
+                      sx={{
+                        color: "white",
+                        fontWeight: 500,
+                        textTransform: "none",
+                        mx: 1,
+                        fontSize: "1rem",
+                        "&:hover": { color: "#38bdf8" },
+                      }}
+                    >
+                      {item}
+                    </Button>
+                  ))}
+                </Box>
+              )}
             </Box>
           </Container>
         </Box>
