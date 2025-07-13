@@ -13,10 +13,14 @@ import {
   MenuItem,
   useMediaQuery
 } from "@mui/material";
-import { useTheme } from "@mui/material/styles"; // ✅ Add this line
+import { useTheme } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { Fade, Slide, Zoom } from "react-awesome-reveal";
+import { Facebook, Twitter, LinkedIn, Instagram } from "@mui/icons-material";
+
+
 
 
 export default function App() {
@@ -71,9 +75,9 @@ export default function App() {
           <Container maxWidth="lg">
             <Box display="flex" justifyContent="space-between" alignItems="center" py={2}>
               <Box display="flex" alignItems="center">
-                <Avatar src="/Logo.png" alt="RootTech" sx={{ width: 40, height: 40, mr: 1 }} />
-                <Typography variant="h6" fontWeight={700} color="white">
-                  RootTech
+                <Typography variant="h5" fontWeight={700} sx={{ color: "white" }}>
+                  <Box component="span" sx={{ fontWeight: 400, color: "#38bdf8" }}>Root</Box>
+                  <Box component="span" sx={{ fontWeight: 700 }}>Tech</Box>
                 </Typography>
               </Box>
               {isMobile ? (
@@ -349,11 +353,7 @@ export default function App() {
               <Typography variant="body2" color="gray">
                 Empowering companies with top-tier tech talent.
               </Typography>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-              >
+              <Fade direction="up" triggerOnce>
                 <Box mt={3} display="flex" alignItems="center">
                   <Avatar
                     alt="Md Nasir"
@@ -372,27 +372,60 @@ export default function App() {
                     </Typography>
                   </Box>
                 </Box>
-              </motion.div>
+              </Fade>
             </Grid>
             <Grid item xs={12} md={6}>
               <Typography variant="h6" fontWeight={700} gutterBottom>
                 Quick Links
               </Typography>
-              <Box>
-                {[
-                  "Home",
-                  "About",
-                  "Services",
-                  "Contact"
-                ].map((link) => (
-                  <Button
-                    key={link}
-                    component={Link}
-                    to={link === "Home" ? "/" : `/${link.toLowerCase()}`}
-                    sx={{ color: "white", textTransform: "none" }}
+              <Fade direction="up" cascade triggerOnce>
+                <Box>
+                  {[
+                    "Home",
+                    "About",
+                    "Services",
+                    "Contact"
+                  ].map((link) => (
+                    <Button
+                      key={link}
+                      component={Link}
+                      to={link === "Home" ? "/" : `/${link.toLowerCase()}`}
+                      sx={{ color: "white", textTransform: "none" }}
+                    >
+                      {link}
+                    </Button>
+                  ))}
+                </Box>
+              </Fade>
+              <Box mt={3} display="flex" gap={2}>
+                {[{
+                  icon: <Facebook />,
+                  href: "https://facebook.com"
+                }, {
+                  icon: <Twitter />,
+                  href: "https://twitter.com"
+                }, {
+                  icon: <LinkedIn />,
+                  href: "https://linkedin.com"
+                }, {
+                  icon: <Instagram />,
+                  href: "https://instagram.com"
+                }].map((social, i) => (
+                  <IconButton
+                    key={i}
+                    href={social.href}
+                    target="_blank"
+                    sx={{
+                      color: "white",
+                      transition: "transform 0.3s ease",
+                      "&:hover": {
+                        transform: "scale(1.3)",
+                        color: "#38bdf8"
+                      }
+                    }}
                   >
-                    {link}
-                  </Button>
+                    {social.icon}
+                  </IconButton>
                 ))}
               </Box>
             </Grid>
